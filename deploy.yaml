@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aspnetapp-deployment
+  labels:
+    app: aspnetapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aspnetapp
+  template:
+    metadata:
+      labels:
+        app: aspnetapp
+    spec:
+      containers:
+      - name: aspnetapp-pod
+        image: johnechelon/aspnetapp-repo:v1
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: myregistrykey
