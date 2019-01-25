@@ -5,7 +5,7 @@ build:
     - script:
         name: restore
         code: |
-          dotnet restore
+          sudo dotnet restore
     - script:
         name: build
         code: |
@@ -16,15 +16,16 @@ build:
           dotnet publish -o publish
     - script:
         name: copy binary
-        cwd: ./
         code: |
           cp -r . $WERCKER_OUTPUT_DIR/app 
+          cd $WERCKER_OUTPUT_DIR/app
 deploy:
   steps:
     - internal/docker-push:
         cwd: $WERCKER_OUTPUT_DIR/app
         username: $USERNAME
         password: $PASSWORD
-        repository: johnechelon//aspnetapp-repo:v1
+        tag: v1
+        repository: johnechelon//aspnetapp-repo
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
